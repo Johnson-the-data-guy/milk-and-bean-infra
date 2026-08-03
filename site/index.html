@@ -3,11 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Milk &amp; Bean — Neighborhood Coffee House</title>
-<meta name="description" content="Milk & Bean is a neighborhood coffee house serving slow-roasted coffee, fresh pastries, and warm mornings.">
+<script>document.documentElement.classList.add("js");</script>
+<title>Milk &amp; Bean — Coffee &amp; Doughnut Shop, Ikoyi</title>
+<meta name="description" content="Milk & Bean is a neighborhood coffee and doughnut shop in Ikoyi, Lagos — slow-roasted coffee, glazed doughnuts baked daily, and a place to sit a while.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,700;6..12,800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -15,13 +17,17 @@
 <header class="site-header">
   <div class="wrap header-inner">
     <a class="brand" href="#top">
-      <span class="brand-mark" aria-hidden="true">☕</span>
+      <span class="brand-mark" aria-hidden="true">🍩</span>
       Milk &amp; Bean
     </a>
-    <nav class="nav" aria-label="Primary">
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav">
+      <span class="nav-toggle-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Menu</span>
+    </button>
+    <nav class="nav" id="primary-nav" aria-label="Primary" data-open="false">
       <a href="#menu">Menu</a>
       <a href="#about">About</a>
-      <a href="#hours">Hours</a>
+      <a href="#reserve">Reserve</a>
       <a href="#visit">Visit</a>
     </nav>
   </div>
@@ -34,13 +40,33 @@
       <img src="img/hero.jpg" alt="Warm, sunlit interior of a coffee house with wooden tables and hanging pendant lights" loading="eager">
       <div class="hero-scrim"></div>
     </div>
+
+    <div class="hero-donut" aria-hidden="true" data-object="donut-pink" data-section="top">
+      <canvas></canvas>
+      <div class="donut-fallback">
+        <span class="donut-ring"></span>
+        <span class="donut-hole"></span>
+        <span class="sprinkle"></span>
+        <span class="sprinkle"></span>
+        <span class="sprinkle"></span>
+        <span class="sprinkle"></span>
+        <span class="sprinkle"></span>
+      </div>
+    </div>
+
+    <div class="hero-steam" aria-hidden="true">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+
     <div class="wrap hero-content">
       <p class="eyebrow">Est. on your corner since day one</p>
-      <h1>Slow mornings start<br>with a warm cup.</h1>
-      <p class="hero-sub">Small-batch roasted coffee, fresh pastries, and a place to sit a while.</p>
+      <h1>Slow mornings start<br>with a warm cup and a glaze.</h1>
+      <p class="hero-sub">Small-batch roasted coffee and doughnuts fried and glazed fresh every morning, right here in Ikoyi.</p>
       <div class="hero-cta">
         <a class="btn btn-primary" href="#menu">See the menu</a>
-        <a class="btn btn-ghost" href="#visit">Find us</a>
+        <a class="btn btn-ghost" href="#reserve">Reserve a table</a>
       </div>
     </div>
   </section>
@@ -48,77 +74,110 @@
   <section class="strip" aria-hidden="true">
     <div class="strip-track">
       <span>Slow-roasted</span><span>•</span>
+      <span>Fried &amp; glazed daily</span><span>•</span>
       <span>Locally sourced</span><span>•</span>
-      <span>Baked daily</span><span>•</span>
       <span>Community owned</span><span>•</span>
       <span>Slow-roasted</span><span>•</span>
+      <span>Fried &amp; glazed daily</span><span>•</span>
       <span>Locally sourced</span><span>•</span>
-      <span>Baked daily</span><span>•</span>
       <span>Community owned</span><span>•</span>
     </div>
   </section>
 
   <section class="menu" id="menu">
     <div class="wrap">
-      <div class="section-head">
+      <div class="section-head reveal">
         <p class="eyebrow">On the counter</p>
         <h2>Today's menu</h2>
       </div>
 
       <div class="menu-layout">
         <div class="menu-list">
-          <ul class="menu-items">
-            <li class="menu-item">
-              <div class="menu-item-top">
-                <h3>House Latte</h3>
-                <span class="price">$4.75</span>
+          <div class="menu-card">
+            <div class="menu-group">
+              <p class="menu-group-title">Coffee</p>
+              <ul class="menu-items reveal-stagger">
+                <li class="menu-item reveal">
+                  <div class="menu-item-top">
+                    <h3>House Latte</h3>
+                    <span class="price">₦2,800</span>
+                  </div>
+                  <p>Double espresso, steamed whole milk, a whisper of foam.</p>
+                </li>
+                <li class="menu-item reveal">
+                  <div class="menu-item-top">
+                    <h3>Pour Over</h3>
+                    <span class="price">₦2,500</span>
+                  </div>
+                  <p>Single-origin beans, brewed fresh to order — ask what's pouring.</p>
+                </li>
+                <li class="menu-item reveal">
+                  <div class="menu-item-top">
+                    <h3>Maple Oat Cortado</h3>
+                    <span class="price">₦3,000</span>
+                  </div>
+                  <p>Espresso cut with oat milk and a thread of maple.</p>
+                </li>
+              </ul>
+            </div>
+
+            <div class="menu-group">
+              <p class="menu-group-title">Doughnuts — the case</p>
+              <div class="donut-case-wrap">
+                <button class="case-nav case-prev" type="button" aria-label="Scroll doughnut case left">‹</button>
+                <ul class="donut-case reveal-stagger" tabindex="0" aria-label="Doughnut flavors, scroll horizontally">
+                  <li class="donut-card reveal">
+                    <div class="donut-swatch donut-swatch--glazed" aria-hidden="true"><img src="img/pastries.jpg" alt="" loading="lazy"></div>
+                    <h4>Classic Glazed</h4>
+                    <span class="price">₦1,500</span>
+                    <p>Yeast-raised, dipped in warm vanilla glaze while it's still hot.</p>
+                  </li>
+                  <li class="donut-card reveal">
+                    <div class="donut-swatch donut-swatch--choc" aria-hidden="true"><img src="img/pastries.jpg" alt="" loading="lazy"></div>
+                    <h4>Chocolate Drizzle</h4>
+                    <span class="price">₦1,700</span>
+                    <p>Old-fashioned cake doughnut, dark chocolate drizzle, sea salt.</p>
+                  </li>
+                  <li class="donut-card reveal">
+                    <div class="donut-swatch donut-swatch--strawberry" aria-hidden="true"><img src="img/pastries.jpg" alt="" loading="lazy"></div>
+                    <h4>Strawberry Sprinkle</h4>
+                    <span class="price">₦1,700</span>
+                    <p>Pink strawberry icing, rainbow sprinkles, entirely too much fun.</p>
+                  </li>
+                  <li class="donut-card reveal">
+                    <div class="donut-swatch donut-swatch--cardamom" aria-hidden="true"><img src="img/pastries.jpg" alt="" loading="lazy"></div>
+                    <h4>Cardamom Old-Fashioned</h4>
+                    <span class="price">₦1,600</span>
+                    <p>Dense cake doughnut, cardamom sugar crust, a nod to the bun recipe we grew up on.</p>
+                  </li>
+                  <li class="donut-card reveal">
+                    <div class="donut-swatch donut-swatch--lemon" aria-hidden="true"><img src="img/pastries.jpg" alt="" loading="lazy"></div>
+                    <h4>Lemon Glaze</h4>
+                    <span class="price">₦1,600</span>
+                    <p>Bright lemon icing over a pillowy yeast base — sharp enough to cut the coffee.</p>
+                  </li>
+                  <li class="donut-card reveal">
+                    <div class="donut-swatch donut-swatch--jam" aria-hidden="true"><img src="img/pastries.jpg" alt="" loading="lazy"></div>
+                    <h4>Jam-Filled</h4>
+                    <span class="price">₦1,800</span>
+                    <p>Pillow-soft dough, a generous core of raspberry jam, dusted in sugar.</p>
+                  </li>
+                </ul>
+                <button class="case-nav case-next" type="button" aria-label="Scroll doughnut case right">›</button>
               </div>
-              <p>Double espresso, steamed whole milk, a whisper of foam.</p>
-            </li>
-            <li class="menu-item">
-              <div class="menu-item-top">
-                <h3>Pour Over</h3>
-                <span class="price">$4.25</span>
-              </div>
-              <p>Single-origin beans, brewed fresh to order — ask what's pouring.</p>
-            </li>
-            <li class="menu-item">
-              <div class="menu-item-top">
-                <h3>Maple Oat Cortado</h3>
-                <span class="price">$5.00</span>
-              </div>
-              <p>Espresso cut with oat milk and a thread of maple.</p>
-            </li>
-            <li class="menu-item">
-              <div class="menu-item-top">
-                <h3>Butter Croissant</h3>
-                <span class="price">$3.50</span>
-              </div>
-              <p>Laminated dough, baked golden every morning in-house.</p>
-            </li>
-            <li class="menu-item">
-              <div class="menu-item-top">
-                <h3>Cardamom Bun</h3>
-                <span class="price">$4.00</span>
-              </div>
-              <p>Swedish-style sweet roll, cardamom sugar crust.</p>
-            </li>
-            <li class="menu-item">
-              <div class="menu-item-top">
-                <h3>Iced Vanilla Bean</h3>
-                <span class="price">$4.95</span>
-              </div>
-              <p>Cold brew, house vanilla syrup, over ice.</p>
-            </li>
-          </ul>
+            </div>
+          </div>
         </div>
 
-        <div class="menu-media">
+        <div class="menu-media reveal" data-reveal-index="1">
+          <div class="float-object float-object--menu-cup" aria-hidden="true" data-object="cup" data-section="menu">
+            <canvas></canvas>
+          </div>
           <figure class="menu-photo menu-photo-1">
             <img src="img/latte.jpg" alt="Latte with heart-shaped latte art in a white ceramic cup" loading="lazy">
           </figure>
           <figure class="menu-photo menu-photo-2">
-            <img src="img/pastries.jpg" alt="Fresh pastries and croissants arranged in a wooden basket" loading="lazy">
+            <img src="img/pastries.jpg" alt="Fresh glazed doughnuts and pastries arranged in a wooden basket" loading="lazy">
           </figure>
         </div>
       </div>
@@ -127,39 +186,94 @@
 
   <section class="about" id="about">
     <div class="wrap about-layout">
-      <div class="about-media">
+      <div class="about-media reveal" data-reveal-index="0">
         <img src="img/beans.jpg" alt="Close-up of freshly roasted coffee beans" loading="lazy">
       </div>
-      <div class="about-content">
+      <div class="about-content reveal" data-reveal-index="1">
+        <div class="float-object float-object--about-beans" aria-hidden="true" data-object="beans" data-section="about">
+          <canvas></canvas>
+        </div>
         <p class="eyebrow">Our story</p>
         <h2>A little counter with big mornings.</h2>
-        <p>Milk &amp; Bean opened as a two-table counter with one goal: pour coffee worth slowing down for. We roast in small batches, bake before sunrise, and know most of our regulars by their order.</p>
-        <p>No rush, no gimmicks — just good coffee, warm bread, and a seat by the window whenever you need one.</p>
+        <p>Milk &amp; Bean opened as a two-table counter with one goal: pour coffee worth slowing down for, next to a doughnut worth the extra napkin. We roast in small batches, fry and glaze before sunrise, and know most of our regulars by their order.</p>
+        <p>No rush, no gimmicks — just good coffee, warm dough, and a seat by the window whenever you need one.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="reserve" id="reserve">
+    <div class="wrap reserve-layout">
+      <div class="reserve-intro reveal" data-reveal-index="0">
+        <div class="float-object float-object--reserve-donut" aria-hidden="true" data-object="donut-choc" data-section="reserve">
+          <canvas></canvas>
+        </div>
+        <p class="eyebrow">Save a seat</p>
+        <h2>Reserve a table</h2>
+        <p>Booking here holds your table on this device only — there's no backend, no database, just your browser's local storage. Come back on the same device to see it, or just remember the time.</p>
+      </div>
+
+      <div class="booking-card reveal" data-reveal-index="1">
+        <form class="booking-form" id="booking-form" novalidate>
+          <div class="field field-full">
+            <label for="booking-name">Name</label>
+            <input type="text" id="booking-name" name="name" autocomplete="name" required>
+            <p class="field-error" id="error-name" aria-live="polite"></p>
+          </div>
+
+          <div class="field">
+            <label for="booking-party">Party size</label>
+            <input type="number" id="booking-party" name="party" min="1" max="12" value="2" required>
+            <p class="field-error" id="error-party" aria-live="polite"></p>
+          </div>
+
+          <div class="field">
+            <label for="booking-date">Date</label>
+            <input type="date" id="booking-date" name="date" required>
+            <p class="field-error" id="error-date" aria-live="polite"></p>
+          </div>
+
+          <div class="field field-full">
+            <label for="booking-time">Time</label>
+            <select id="booking-time" name="time" required>
+              <option value="">Pick a date first</option>
+            </select>
+            <p class="field-error" id="error-time" aria-live="polite"></p>
+          </div>
+
+          <div class="field field-full">
+            <label for="booking-note">Note <span aria-hidden="true">(optional)</span></label>
+            <textarea id="booking-note" name="note" placeholder="Window seat, birthday, allergy — anything we should know."></textarea>
+          </div>
+
+          <button class="btn btn-primary booking-submit" type="submit">Confirm reservation</button>
+        </form>
       </div>
     </div>
   </section>
 
   <section class="info" id="hours">
     <div class="wrap info-grid">
-      <div class="info-card">
+      <div class="info-card reveal" data-reveal-index="0">
         <h2>Hours</h2>
         <dl class="hours-list">
-          <div class="hours-row"><dt>Mon – Fri</dt><dd>7:00 AM – 6:00 PM</dd></div>
-          <div class="hours-row"><dt>Saturday</dt><dd>8:00 AM – 6:00 PM</dd></div>
-          <div class="hours-row"><dt>Sunday</dt><dd>8:00 AM – 3:00 PM</dd></div>
+          <div class="hours-row"><dt>Mon – Fri</dt><dd>7:00 AM – 7:00 PM</dd></div>
+          <div class="hours-row"><dt>Saturday</dt><dd>8:00 AM – 7:00 PM</dd></div>
+          <div class="hours-row"><dt>Sunday</dt><dd>9:00 AM – 4:00 PM</dd></div>
         </dl>
       </div>
 
-      <div class="info-card" id="visit">
+      <div class="info-card reveal" data-reveal-index="1" id="visit">
         <h2>Visit</h2>
         <address>
-          214 Maple Street<br>
-          Riverside, OH 45001
+          39 Glover Street<br>
+          Ikoyi, Lagos, Nigeria
         </address>
         <p class="info-contact">
-          <a href="tel:+15135550142">(513) 555-0142</a><br>
+          <a href="tel:+2348091234567">+234 809 123 4567</a><br>
           <a href="mailto:hello@milkandbean.example">hello@milkandbean.example</a>
         </p>
+        <div class="map-embed" id="map" role="img" aria-label="Map showing Milk & Bean's approximate location in Ikoyi, Lagos"></div>
+        <p class="map-note">Pin is an approximate street-level location — see map.js for how it was geocoded.</p>
       </div>
     </div>
   </section>
@@ -168,10 +282,24 @@
 
 <footer class="site-footer">
   <div class="wrap footer-inner">
-    <p>&copy; 2026 Milk &amp; Bean Coffee House. All rights reserved.</p>
-    <p class="footer-note">Photos via Unsplash.</p>
+    <p>&copy; 2026 Milk &amp; Bean Coffee &amp; Doughnut Shop. All rights reserved.</p>
+    <p class="footer-note">Photos via Unsplash. Map data via OpenStreetMap.</p>
   </div>
 </footer>
 
+<div class="modal-overlay" id="confirm-overlay" hidden>
+  <div class="confirm-modal" role="dialog" aria-modal="true" aria-labelledby="confirm-title" id="confirm-modal">
+    <div class="confirm-icon" aria-hidden="true">🍩</div>
+    <h2 id="confirm-title">You're booked!</h2>
+    <p>Table for <span class="confirm-detail" id="confirm-party"></span> on <span class="confirm-detail" id="confirm-date"></span> at <span class="confirm-detail" id="confirm-time"></span>, under <span class="confirm-detail" id="confirm-name"></span>.</p>
+    <button class="btn btn-primary confirm-close" type="button" id="confirm-close">Done</button>
+  </div>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script type="module" src="scene.js"></script>
+<script src="map.js" defer></script>
+<script src="booking.js" defer></script>
+<script src="script.js" defer></script>
 </body>
 </html>
