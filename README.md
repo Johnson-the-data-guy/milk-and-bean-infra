@@ -59,4 +59,4 @@ The real sequence: creating the **Route 53 hosted zone** generates 4 nameservers
 A $51/year number got grabbed while browsing AWS pricing, but it turned out to be an unrelated Savings Plan quote — not the actual on-demand cost of this instance. The real number came from the public EC2 pricing page, filtered by instance type and region directly, with no billing console access needed. Lesson: pricing pages have a lot of adjacent numbers on them: confirm the number matches the exact instance type, region, and pricing model before trusting it.
 
 ---
-*Part of the [DevOps Career Simulator](../../devops-career-simulator) — Project 01 of 12.*
+*Part of the [DevOps Career Simulator](https://github.com/Johnson-the-data-guy/devops-career-simulator) — Project 01 of 12.*
